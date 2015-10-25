@@ -651,10 +651,10 @@ function popoverPitchValue(){
 		}
 	
 
-		$(this).popover({title:$voice.text()+" "+voiceName,placement:"top",
+		$(this).popover({trigger: 'focus', title:$voice.text()+" "+voiceName,placement:"top",
 		html:"true",content:"<textarea  readonly>"+$("#"+targetArea).val()+"</textarea>"});	
 
-		$(this).tooltip({title:"Click textarea",placement:"bottom"});		
+		$(this).tooltip({title:"Click text area",placement:"bottom"});		
 	});
 }
 
