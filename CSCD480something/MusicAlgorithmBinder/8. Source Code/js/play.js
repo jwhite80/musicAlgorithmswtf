@@ -85,9 +85,14 @@ function getOutput() {
         //get duration from Duration mapping tab output
         var $duration = $("#dMapArea" + i).val();
         durationArray = toArray($duration);
-        if (pitchArray != undefined && durationArray != undefined) {
-            
-            voiceArray[i - 1] = new Voice(pitchArray, durationArray,false);
+        if (pitchArray != undefined && durationArray != undefined) 
+        {
+         	if(document.getElementById('mute'+i).checked)
+			{   
+            	voiceArray[i - 1] = new Voice(pitchArray, durationArray, true);
+			}
+			else
+				voiceArray[i - 1] = new Voice(pitchArray, durationArray, false);
            
         } else {
             alert("could not get voice " + $voiceNum);
