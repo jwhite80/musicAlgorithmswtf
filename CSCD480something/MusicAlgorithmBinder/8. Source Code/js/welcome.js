@@ -75,7 +75,6 @@ function getNoteCount(textArea){
 function getTextAreaData(textArea){
 
 	var value = textArea.val();
-	value = value.replace(/-/g,''); // strips negative signs
 	value = value.replace(/,,/g,'');
 	value = value.split(",").map(Number);
 	var newData = new Array();
@@ -94,7 +93,6 @@ function getDataArray(textArea){
 	var $noteCount = $("#note_count"+getVoiceNumber(textArea));
 	
 	var value = textArea.val();
-	value = value.replace(/-/g,''); // strips negative signs
 	value = value.replace(/,,/g,'');
 	value = value.split(",").map(Number);
 	
