@@ -302,13 +302,23 @@ textarea {
   .progressDiv:after {
     clear: both; }
 
-.play_voiceStyle .output {
+.play_voiceStyle .outputLeft {
   display: block;
   margin: 0;
   background: #222;
   color: white;
   width: 43%;
-  float: right; }
+  float: right;
+  text-align: right;}
+  
+  .play_voiceStyle .outputRight {
+  display: block;
+  margin: 0;
+  background: #222;
+  color: white;
+  width: 43%;
+  float: right; 
+  text-align: left;}
 
 .play_voiceStyle input {
   float: right; }

@@ -575,15 +575,15 @@ function play(numberOfVoice){
 		<div class='voice cf'>\
 			<div class='play_voiceStyle cf'>\
 			<label style='float:left;'>Pitch:</label>\
-			<input type='text' class='output' id='voice"+voiceCount+"_pitch' disabled >\
+			<input type='text' class='outputRight' id='voice"+voiceCount+"_pitch' disabled >\
 			<input type='text' class='cur' id='voice"+voiceCount+"_curpitch' disabled > \
-			<input type='text' class='output' id='voice"+voiceCount+"_pitchplayed'  disabled ></div> \
+			<input type='text' class='outputLeft' id='voice"+voiceCount+"_pitchplayed'  disabled ></div> \
 			\
 			\
 			<div class='play_voiceStyle cf'><label style='float:left;'>Duration:</label> \
-			<input type='text' class='output duration' id='voice"+voiceCount+"_duration' disabled>\
+			<input type='text' class='outputRight duration' id='voice"+voiceCount+"_duration' disabled>\
 			<input type='text' class='cur'id='voice"+voiceCount+"_curduration' disabled >\
-			<input type='text' class='output duration' id='voice"+voiceCount+"_durationplayed' disabled>\
+			<input type='text' class='outputLeft duration' id='voice"+voiceCount+"_durationplayed' disabled>\
 			</div>\
 			<div class='choose-mute'>Mute Track: <input type='checkbox' name='mute' id='mute"+voiceCount+"' onclick='muteTrack($(this))'></div>\
 				<div class='choose-instrument'>Instrument: <select class='instrument"+voiceCount+"' onchange='selectInstrument("+voiceCount+")'>\
