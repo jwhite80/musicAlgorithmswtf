@@ -7,10 +7,35 @@ $(document).ready(function(){
 		var $area = $parentId.find('[id^=dAreaMap]');
 		var $selectionBox = $parentId.find('[id^=dInput_set]');	
 		var $selected = $selectionBox.find("option:selected");
+		
+		
+		 //NOTE: The below segment will insert text into the text box when 'Custom' is selected. --Evan
 		if($selected.text() == "Custom")
 		{
-			$area.val(0);
+			
+			var voiceCount = getVoiceNumber($parentId);
+			
+			//We want to count how many notes are in pitchinput so that we can fill the duration input with the right amount
+			var pitchInputCount = getTextAreaData($('#areaPitch'+voiceCount)).length;
+			
+			var noteString = "";
+			for(var i = 0; i < pitchInputCount - 1; i++)
+			{
+				noteString += 1 + ",";
+			}
+			
+			
+			if(pitchInputCount > 0)
+			{
+				noteString += "1";
+			}
+			else
+			{
+				$area.val("");
+			}
+			$area.val(noteString);
 		}
+		
 	});
 
 	$('.duration_input').on('change', '[id^=dInput_set], [id^=dAreaMap]', function() {
