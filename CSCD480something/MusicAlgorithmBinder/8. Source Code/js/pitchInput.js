@@ -7,12 +7,19 @@ $(document).ready(function(){
 		var $area = $parentId.find('[id^=areaPitch]');
 		var $selectionBox = $parentId.find('[id^=input_set]');	
 		var $selected = $selectionBox.find("option:selected");
+		
+		//NOTE: This segment below will fill the text box with content once the Custom setting is selected --Evan
 		if($selected.text() == "Custom")
 		{
-			$area.val(0);
+			$area.val("");
+			
 		}
 	});
 	
+	$('.note_count1').on('input', '[id^=input_set]', function() {
+		alert("event thrown");
+		
+	})
 
 	$('.pitch_input').on('change', '[id^=input_set], [id^=note_count],[id^=areaPitch]', function() {	
 //		alert("Alert 1");
@@ -63,14 +70,14 @@ $(document).ready(function(){
 	
 		$infoTooltip.attr("data-original-title",tooltipText); 
 	}		
-
+	//Ensures that the note count is not higher than the cap (2000) or less than zero
 	function noteCountTest($countId){
 		var maxNoteCount = 2000;
 		var defaultCount = 24;
 	
 		var noteVal = $countId.val();	
 
-		if(noteVal < 1 || noteVal > maxNoteCount){
+		if(noteVal < 0 || noteVal > maxNoteCount){
 			$countId.val(defaultCount);
 		}
 //		alert(noteLength);
