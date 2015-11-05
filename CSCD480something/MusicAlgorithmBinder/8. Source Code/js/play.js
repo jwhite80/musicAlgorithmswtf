@@ -159,23 +159,87 @@ $("#bpm").text(bpm+" bpm");
 function setVoiceControls(index,curval)
 {
 	var voiceNum = index + 1;
-            var pitchArray = voiceArray[index].pitchArray;
-            var durationArray = voiceArray[index].durationArray;
-            $("#voice" + voiceNum + "_curpitch").val(pitchArray[curval - 1]);
-			colorKey(pitchArray[curval-1],voiceNum);
-            $("#voice" + voiceNum + "_pitch").val(pitchArray.slice(curval, pitchArray.length).toString());
-            if (curval - 1 > 0) {
-                $("#voice" + voiceNum + "_pitchplayed").val(pitchArray.slice(0, curval - 1));
-                $("#voice" + voiceNum + "_durationplayed").val(durationArray.slice(0, curval - 1));
-            } else {
+    var pitchArray = voiceArray[index].pitchArray;
+    var durationArray = voiceArray[index].durationArray;
+	colorKey(pitchArray[curval-1],voiceNum);
+	
+	if(pitchArray[curval - 1] < 10)
+	{
+		$("#voice" + voiceNum + "_curpitch").val('0' + pitchArray[curval - 1]);
+	}
+	else
+		$("#voice" + voiceNum + "_curpitch").val(pitchArray[curval - 1]);
+	if(durationArray[curval - 1] < 10)
+	{
+		$("#voice" + voiceNum + "_curduration").val('0' + durationArray[curval - 1]);
+	}
+	else
+		$("#voice" + voiceNum + "_curduration").val(durationArray[curval - 1]);
+	
+	// pitchArray and durationArray should always be the same length. If not this will cause issues.
+	var prePitchString = "";
+    var preDurString = "";
+	for(var i = curval; i < pitchArray.length; i++)
+	{
+		var pvalue = pitchArray[i];
+		var dvalue = durationArray[i];
+		if(pvalue < 10)
+		{
+					prePitchString = prePitchString.concat("0" + pvalue + ",");
+		}
+		else 
+		{
+					prePitchString = prePitchString.concat(pvalue + ",");
+		}
+				
+		if(dvalue < 10)
+		{
+					preDurString = preDurString.concat("0" + dvalue + ",");
+		}
+		else 
+		{
+					preDurString = preDurString.concat(dvalue + ",");
+		}
+	}
+	
+    $("#voice" + voiceNum + "_pitch").val(prePitchString);	
+    $("#voice" + voiceNum + "_duration").val(preDurString);
+	
+	if (curval - 1 > 0) 
+    {
+        var postPitchString = "";
+        var postDurString = "";
+		for(var i = 0; i < curval - 1; i++)
+		{
+			var pvalue = pitchArray[i];
+			var dvalue = durationArray[i];
+			if(pvalue < 10)
+			{
+						postPitchString = postPitchString.concat("0" + pvalue + ",");
+			}
+			else 
+			{
+						postPitchString = postPitchString.concat(pvalue + ",");
+			}
+					
+			if(dvalue < 10)
+			{
+						postDurString = postDurString.concat("0" + dvalue + ",");
+			}
+			else 
+			{
+						postDurString = postDurString.concat(dvalue + ",");
+			}
 
-                $("#voice" + voiceNum + "_pitchplayed").val("");
-                $("#voice" + voiceNum + "_durationplayed").val("");
-            }
-
-            $("#voice" + voiceNum + "_curduration").val(durationArray[curval - 1]);
-            $("#voice" + voiceNum + "_duration").val(durationArray.slice(curval, durationArray.length).toString());
-
+		}
+        $("#voice" + voiceNum + "_pitchplayed").val(postPitchString);
+        $("#voice" + voiceNum + "_durationplayed").val(postDurString);
+    } 
+    else
+	{
+        $("#voice" + voiceNum + "_pitchplayed").val("");
+        $("#voice" + voiceNum + "_durationplayed").val("");
+    }
 }
 
 /**
