@@ -16,7 +16,7 @@ function defaultPitch_Input(){
 		var $area = $voiceNum.find('[id^=areaPitch]');
 
 		//pitch_input
-		call_pitch("E Constant",24,$area.attr('id'));
+		call_pitch("Sine",24,$area.attr('id'));
 		//writeNoteCount(24,$nCount.attr('id'));
 		mapWriteOutput($nCount.attr('id'),24);
 		//pitch_mapping
@@ -35,7 +35,7 @@ function defaultDuration_Input(){
 		var $area = $voiceNum.find('[id^=dAreaMap]');
 
 		//duration_input
-		call_pitch("E Constant",24,$area.attr('id'));//not reflecting duration input 
+		call_pitch("Quarter Notes",24,$area.attr('id'));//not reflecting duration input 
 
 		//duration_mapping
 		dWriteRangeOut(0,6,i);
@@ -426,14 +426,14 @@ function pitchInput(numberOfVoice){
 				<legend><h3>Voice "+voiceCount+"</h3></legend>\
 				<label for='inputSet'>Input Set:</label>\
 					<select id='input_set"+voiceCount+"' name='inputSet' >\
-					<option>E Constant</option>\
+					<option>Sine</option>\
 					<option>Fibonacci</option>\
 					<option>Integers</option>\
 					<option>Pascal</option>\
 					<option>Phi</option>\
 					<option>Pi</option>\
 					<option>Powers</option>\
-					<option>Sine</option>\
+					<option>E Constant</option>\
 					<option>Custom</option>\
 				</select>\
 				<img id='pitchInfo"+voiceCount+"'> \
@@ -457,14 +457,15 @@ function durationInput(numberOfVoice){
 				<legend><h3>Voice "+voiceCount+"</h3></legend>\
 					<label>Input Set:</label>\
 					<select id='dInput_set"+voiceCount+"' name='inputSet' >\
-					<option>E Constant</option>\
+					<option>Quarter Notes</option>\
+					<option>Sine</option>\
 					<option>Fibonacci</option>\
 					<option>Integers</option>\
 					<option>Pascal</option>\
 					<option>Phi</option>\
 					<option>Pi</option>\
 					<option>Powers</option>\
-					<option>Sine</option>\
+					<option>E Constant</option>\
 					<option>Custom</option>\
 				</select>\
 				<img id='durPitchInfo"+voiceCount+"'> \
