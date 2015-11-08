@@ -185,20 +185,20 @@ function setVoiceControls(index,curval)
 		var dvalue = durationArray[i];
 		if(pvalue < 10)
 		{
-					prePitchString = prePitchString.concat("0" + pvalue + ",");
+					prePitchString = prePitchString.concat("0" + pvalue + " ");
 		}
 		else 
 		{
-					prePitchString = prePitchString.concat(pvalue + ",");
+					prePitchString = prePitchString.concat(pvalue + " ");
 		}
 				
 		if(dvalue < 10)
 		{
-					preDurString = preDurString.concat("0" + dvalue + ",");
+					preDurString = preDurString.concat("0" + dvalue + " ");
 		}
 		else 
 		{
-					preDurString = preDurString.concat(dvalue + ",");
+					preDurString = preDurString.concat(dvalue + " ");
 		}
 	}
 	
@@ -215,20 +215,20 @@ function setVoiceControls(index,curval)
 			var dvalue = durationArray[i];
 			if(pvalue < 10)
 			{
-						postPitchString = postPitchString.concat("0" + pvalue + ",");
+						postPitchString = postPitchString.concat("0" + pvalue + " ");
 			}
 			else 
 			{
-						postPitchString = postPitchString.concat(pvalue + ",");
+						postPitchString = postPitchString.concat(pvalue + " ");
 			}
 					
 			if(dvalue < 10)
 			{
-						postDurString = postDurString.concat("0" + dvalue + ",");
+						postDurString = postDurString.concat("0" + dvalue + " ");
 			}
 			else 
 			{
-						postDurString = postDurString.concat(dvalue + ",");
+						postDurString = postDurString.concat(dvalue + " ");
 			}
 
 		}
