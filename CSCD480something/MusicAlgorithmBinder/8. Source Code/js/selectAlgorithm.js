@@ -260,6 +260,19 @@ var SineSequence = function(){
 	};	
 };
 
+// Used for default output with sine wave for easier listening.
+var QuarterNotes = function () {
+    this.getValues = function (numberOfValues) {
+        var durationArray = new Array();
+        for(var x = 0; x < numberOfValues; x++)
+        {
+            durationArray.push(0);
+        }
+
+        return durationArray;
+    };
+};
+
 //Phi (Golden Ratio) Sequence class
 var PhiSequence = function(){
 	
@@ -335,6 +348,8 @@ var AlgorithmFactory = function(chosenStrategy){
 					return new SineSequence();	
 			case "Custom":
 					return new CustomSequence();
+			case "Quarter Notes":
+					return new QuarterNotes();
 		}
 	
 		return "Error";	

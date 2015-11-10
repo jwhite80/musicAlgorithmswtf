@@ -16,7 +16,7 @@ function defaultPitch_Input(){
 		var $area = $voiceNum.find('[id^=areaPitch]');
 
 		//pitch_input
-		call_pitch("E Constant",24,$area.attr('id'));
+		call_pitch("Sine",24,$area.attr('id'));
 		//writeNoteCount(24,$nCount.attr('id'));
 		mapWriteOutput($nCount.attr('id'),24);
 		//pitch_mapping
@@ -35,7 +35,7 @@ function defaultDuration_Input(){
 		var $area = $voiceNum.find('[id^=dAreaMap]');
 
 		//duration_input
-		call_pitch("E Constant",24,$area.attr('id'));//not reflecting duration input 
+		call_pitch("Quarter Notes",24,$area.attr('id'));//not reflecting duration input 
 
 		//duration_mapping
 		dWriteRangeOut(0,6,i);
@@ -72,6 +72,7 @@ function getNoteCount(textArea){
 	return $('#note_count'+voiceNum).val();;
 }
 
+//This grabs values out of the text box, strips negatives and and spaces, and splits by the comma delimiter.
 function getTextAreaData(textArea){
 
 	var value = textArea.val();
@@ -101,14 +102,14 @@ function getDataArray(textArea){
 
 function validatePanel(textArea, voiceNum){
 	validateTextArea(textArea);
-	validateNoteCount(textArea, voiceNum);
+	validateNoteCount(textArea, voiceNum); 
 }
 
+//This function checks the values in the text area, it is also the culprit that prevents a text box from being blank
 function validateTextArea(textArea){
 	var data = getTextAreaData(textArea);
 	var newData = new Array();
-	var isValid = true;
-
+	var isValid = true; //Not sure if this value actually does anything --Evan
 	for(var i = 0; i < data.length; i++)
 	{
 		if(isNaN(data[i]))
@@ -120,18 +121,23 @@ function validateTextArea(textArea){
 			newData.push(data[i]);
 		}
 	}
-	printArray(textArea, newData);
+		if(data.length == 1 && data[0] == 0){
+		newData[0] = "";
+	}
+	printArray(textArea, newData); 
 }
 
 function validateNoteCount(textArea, voiceNum){ //check the text area against the note count box
-	var data = getTextAreaData(textArea);
-	var $inputBox = $("#note_count"+voiceNum);//$(this).closest('div[id]').find('[id^=note_count]');//$("#note_count"+voiceNum);
+	var data = getTextAreaData(textArea); //Grabs stuff from text box
+	var $inputBox = $("#note_count"+voiceNum); //Grabs stuff from the note count
+	//$(this).closest('div[id]').find('[id^=note_count]');//$("#note_count"+voiceNum);
 	//alert($inputBox.val() + " " + data.length);
-	if($inputBox.val() != data.length)
+	if($inputBox.val() != data.length) //If the note count does not match the length of data from the text box...
 	{
 		//alert("note count does not match");
-		var pitchInputCount = getTextAreaData($('#areaPitch'+voiceNum)).length;
+		var pitchInputCount = getTextAreaData($('#areaPitch'+voiceNum)).length; //the true length of the text area(the number of notes)
 		var durationInputCount = getTextAreaData($('#dAreaMap'+voiceNum)).length;
+		//Make sure note count doesn't exceed cap
 		if(pitchInputCount > 2000)
 		{
 			pitchInputCount = 2000;
@@ -143,7 +149,12 @@ function validateNoteCount(textArea, voiceNum){ //check the text area against th
 		var pitchSelection = $('#input_set'+voiceNum+'').find('option:selected').text(); //[CHANGED]
 		var durationSelection = $('#dInput_set'+voiceNum).find('option:selected').text();
 		//alert(pitchSelection.text() + " " + durationSelection.text());
-		if(pitchSelection == "Custom" && durationSelection == "Custom")
+		//This should only be true when user selects 'Custom', clearing text box for their input
+		//alert("pitchinputcount: " + pitchInputCount + "\ndurationinputcount: " + durationInputCount);
+		if(data.length == 1 && data[0] == "") {
+			$inputBox.val(0);
+		}
+		else if(pitchSelection == "Custom" && durationSelection == "Custom")
 		{
 			if(pitchInputCount < durationInputCount)
 				$inputBox.val(pitchInputCount);
@@ -158,12 +169,16 @@ function validateNoteCount(textArea, voiceNum){ //check the text area against th
 		{
 			$inputBox.val(durationInputCount);
 		}
+		
+		
+		
+		
 	} 
 }
 
 function printArray(textArea, data){
 	var csv = "";
-	for(var i = 0; i<data.length - 1; i++)
+	for(var i = 0; i < data.length - 1; i++)
 	{
 		csv += data[i] + ",";
 	}
@@ -411,14 +426,14 @@ function pitchInput(numberOfVoice){
 				<legend><h3>Voice "+voiceCount+"</h3></legend>\
 				<label for='inputSet'>Input Set:</label>\
 					<select id='input_set"+voiceCount+"' name='inputSet' >\
-					<option>E Constant</option>\
+					<option>Sine</option>\
 					<option>Fibonacci</option>\
 					<option>Integers</option>\
 					<option>Pascal</option>\
 					<option>Phi</option>\
 					<option>Pi</option>\
 					<option>Powers</option>\
-					<option>Sine</option>\
+					<option>E Constant</option>\
 					<option>Custom</option>\
 				</select>\
 				<img id='pitchInfo"+voiceCount+"'> \
@@ -442,14 +457,15 @@ function durationInput(numberOfVoice){
 				<legend><h3>Voice "+voiceCount+"</h3></legend>\
 					<label>Input Set:</label>\
 					<select id='dInput_set"+voiceCount+"' name='inputSet' >\
-					<option>E Constant</option>\
+					<option>Quarter Notes</option>\
+					<option>Sine</option>\
 					<option>Fibonacci</option>\
 					<option>Integers</option>\
 					<option>Pascal</option>\
 					<option>Phi</option>\
 					<option>Pi</option>\
 					<option>Powers</option>\
-					<option>Sine</option>\
+					<option>E Constant</option>\
 					<option>Custom</option>\
 				</select>\
 				<img id='durPitchInfo"+voiceCount+"'> \
