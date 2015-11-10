@@ -302,26 +302,31 @@ textarea {
   .progressDiv:after {
     clear: both; }
 
-.play_voiceStyle .outputLeft {
+.play_voiceStyle .overflowDiv {
   display: block;
   margin: 0;
-  background: #222;
-  color: white;
-  width: 43%;
   float: right;
-  text-align: right;}
-  
-  .play_voiceStyle .outputRight {
-  display: block;
-  margin: 0;
+  overflow: hidden;
+  width:  43%;
+  }
+
+.play_voiceStyle .outputLeft {
   background: #222;
   color: white;
-  width: 43%;
-  float: right; 
-  text-align: left;}
+  width: 20000%;
+  text-align: right;
+  }
+  
+.play_voiceStyle .outputRight {
+  background: #222;
+  color: white;
+  width: 100%;
+  text-align: left;
+  }
 
 .play_voiceStyle input {
-  float: right; }
+  float: right;
+  }
 
 .cf:before,
 .cf:after {
