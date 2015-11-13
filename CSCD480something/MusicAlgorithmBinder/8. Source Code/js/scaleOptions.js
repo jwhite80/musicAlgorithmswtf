@@ -62,21 +62,24 @@ function getScaleArray(choice){
 function createOutput(textAreaData, scaleArray, pitchMin, pitchMax){
 		for(var i = 0; i < textAreaData.length; i++)
 		{
-			if(textAreaData[i] + scaleArray[textAreaData[i] % 12] > pitchMax)
+			if(parseInt(textAreaData[i])!==0)
 			{
-				// Account for exceeding max by checking the next value down
-				textAreaData[i] --;
-				i --;
-			}
-			else if(textAreaData[i] + scaleArray[textAreaData[i] % 12] < pitchMin)
-			{
-				// Account for exceeding min
-				textAreaData[i] ++;
-				i --;
-			}
-			else
-			{
-				textAreaData[i] += scaleArray[textAreaData[i] % 12]; // this corresponds to the scale arrays
+				if(textAreaData[i] + scaleArray[textAreaData[i] % 12] > pitchMax)
+				{
+					// Account for exceeding max by checking the next value down
+					textAreaData[i] --;
+					i --;
+				}
+				else if(textAreaData[i] + scaleArray[textAreaData[i] % 12] < pitchMin)
+				{
+					// Account for exceeding min
+					textAreaData[i] ++;
+					i --;
+				}
+				else
+				{
+					textAreaData[i] += scaleArray[textAreaData[i] % 12]; // this corresponds to the scale arrays
+				}
 			}
 		}
 		return textAreaData;
