@@ -294,7 +294,7 @@ function replaceValue($parentId){
 		var replaceValInlist = -1 < currentData.indexOf($modiAll.val());
 
 
-		var withinRange = (parseInt($range.val()) <= parseInt($modiAll.val()) && parseInt($modiAll.val()) <= parseInt($to.val())) && (parseInt($range.val()) <= parseInt($modiWith.val()) && parseInt($modiWith.val()) <= parseInt($to.val())) 
+		var withinRange = (parseInt($range.val()) <= parseInt($modiAll.val()) && parseInt($modiAll.val()) <= parseInt($to.val())) && (((parseInt($range.val())) <= parseInt($modiWith.val()) || parseInt($modiWith.val()) === 0) && parseInt($modiWith.val()) <= parseInt($to.val())) 
 	
 		
 		if(fieldCheck && replaceValInlist && withinRange ){
