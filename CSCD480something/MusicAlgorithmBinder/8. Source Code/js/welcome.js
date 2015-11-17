@@ -1,15 +1,14 @@
 ////////////////////////////////////////////////inputs
 //start global ************************************************************************************************
-function defaulData() {
+function defaultData(voiceIndex) {
 
-	defaultPitch_Input();
-	defaultDuration_Input();
+	defaultPitch_Input(voiceIndex);
+	defaultDuration_Input(voiceIndex);
 }
 
-function defaultPitch_Input(){
-	$('[id^=pitchPanel]').each(function (i) {//default load  for Pitch_Input and Pitch_Mapping
-		i++;	
-		var $voiceNum = $(this);
+function defaultPitch_Input(voiceIndex){
+//default load  for Pitch_Input and Pitch_Mapping	
+		var $voiceNum = $("#pitchPanel" + voiceIndex);
 		var grandParent = $voiceNum.closest('div[class]').attr("class").split(" ")[0];
 
 		var $nCount = $voiceNum.find('[id^=note_count]');
@@ -20,15 +19,12 @@ function defaultPitch_Input(){
 		//writeNoteCount(24,$nCount.attr('id'));
 		mapWriteOutput($nCount.attr('id'),24);
 		//pitch_mapping
-		writeRangeOut(1,88,i);
-		call_pitch_Mapping($voiceNum,i);		
-	});
+		writeRangeOut(1,88, voiceIndex);
+		call_pitch_Mapping($voiceNum, voiceIndex);
 }
 
-function defaultDuration_Input(){
-	$('[id^=dPitchPanel]').each(function (i) {//default load for Duration_Input and Duration_Mapping
-		i++;	
-		var $voiceNum = $(this);
+function defaultDuration_Input(voiceIndex){	
+		var $voiceNum = $("#dPitchPanel" + voiceIndex);
 		//var grandParent = $voiceNum.closest('div[class]').attr("class").split(" ")[0];;
 
 		var $idName = $voiceNum.attr("id");
@@ -38,9 +34,8 @@ function defaultDuration_Input(){
 		call_pitch("Quarter Notes",24,$area.attr('id'));//not reflecting duration input 
 
 		//duration_mapping
-		dWriteRangeOut(0,6,i);
-		call_dur_Mapping($voiceNum,i);		
-	});	
+		dWriteRangeOut(0,6, voiceIndex);
+		call_dur_Mapping($voiceNum, voiceIndex);		
 }
 
 function call_pitch(userChoice,noteCount,areaN){// areaN = text area to write to, section?
@@ -379,15 +374,18 @@ function disableAllVoices(boolean){
 
 
 $(document).ready(function(){
+	// This only happens on init
+	var voiceCount = 1;
+	changeVoiceCount(22, voiceCount);
+	
+	// This happens when you change the voice count
+	$("#welcomeChoice").change(function () 
+	{
+		var oldVoiceCount = voiceCount;
+		voiceCount = +$(this).find('option:selected').text();
 
-	var voiceTotal = 1;
-	changeVoiceCount(voiceTotal);
-
-	$("#welcomeChoice").change(function () { 
-		removeVoice(voiceTotal);
-		voiceTotal = $(this).find('option:selected').text();
-		changeVoiceCount(voiceTotal);
-
+		changeVoiceCount(oldVoiceCount, voiceCount);
+		
 		if($("#tabs_container").css('visibility') != "hidden")
 			$("#options ul li").find("#tab").click();
 			
@@ -397,29 +395,53 @@ $(document).ready(function(){
 	});
 
 	
-function changeVoiceCount(voiceTotal){
-		pitchInput(voiceTotal);
-		durationInput(voiceTotal);
-		pitchMapping(voiceTotal);
-		durationMapping(voiceTotal);
-		scaleOptions(voiceTotal); // Initialize Scale Options Tab
-		play(voiceTotal);
-		defaulData();
-		displayImage();
-		getOutput();
+function changeVoiceCount(previousCount, currentCount){
+	if(previousCount == 22) // Init
+	{
+		pitchInput(1);
+		durationInput(1);
+		pitchMapping(1);
+		durationMapping(1);
+		scaleOptions(1);
+		play(1);
+		defaultData(1);
+	}
+	else if(previousCount > currentCount) // Remove voice
+	{
+		var amountToRemove = previousCount - currentCount;
+		for(var i = previousCount; i > currentCount; i--)
+		{
+			removeVoice(i);
+		}
+	}
+	else // Add voice
+	{
+		var amountToAdd = currentCount - previousCount;
+		for(var i = 1; i <= amountToAdd; i++)
+		{
+			pitchInput(+previousCount + +i);
+			durationInput(+previousCount + +i);
+			pitchMapping(+previousCount + +i);
+			durationMapping(+previousCount + +i);
+			scaleOptions(+previousCount + +i);
+			play(+previousCount + +i);
+			defaultData(+previousCount + +i);
+		}
+	}
+	displayImage();
+	getOutput();
 }	
 
-function removeVoice(numberOfVoice){
-	$( '[id^=pitchPanel]').remove();
-	$( '[id^=mappingPanel]').remove();
-	$( '[id^=dPitchPanel]').remove();
-	$( '[id^=dMappingPanel]').remove();
-	$( '[id^=scaleOptionsPanel]').remove();
-	$('.voice').remove();
+function removeVoice(voiceIndex){
+	$( ("#pitchPanel" + voiceIndex) ).remove();
+	$( ("#mappingPanel" + voiceIndex) ).remove();
+	$( ("#dPitchPanel" + voiceIndex) ).remove();
+	$( ("#dMappingPanel" + voiceIndex) ).remove();
+	$( ("#scaleOptionsPanel" + voiceIndex) ).remove();
+	$( ("#voiceContainer" + voiceIndex) ).remove();
 }
 
-function pitchInput(numberOfVoice){
-	for(var voiceCount=1; voiceCount <= numberOfVoice; voiceCount++){
+function pitchInput(voiceCount){
 		var $voice ="\
 		<div id='pitchPanel"+voiceCount+"' class='full_view well well-sm'>\
 			<fieldset>\
@@ -446,11 +468,9 @@ function pitchInput(numberOfVoice){
 		";
 
 		$( ".pitch_input" ).append( $voice );
-	}
 }
 
-function durationInput(numberOfVoice){
-	for(var voiceCount=1; voiceCount <= numberOfVoice; voiceCount++){
+function durationInput(voiceCount){
 		var $voice ="\
 		<div id='dPitchPanel"+voiceCount+"' class='full_view well well-sm'>\
 			<fieldset>\
@@ -475,11 +495,9 @@ function durationInput(numberOfVoice){
 		</div>\
 		";
 		$( ".duration_input" ).append( $voice );
-	}
 }
 
-function pitchMapping(numberOfVoice){
-	for(var voiceCount=1; voiceCount <= numberOfVoice; voiceCount++){
+function pitchMapping(voiceCount){
 		var $voice ="\
 		<div id='mappingPanel"+voiceCount+"' class='full_view well well-sm'>\
 			<fieldset>\
@@ -509,11 +527,9 @@ function pitchMapping(numberOfVoice){
 		</div>\
 		";
 		$( ".pitch_mapping" ).append( $voice );
-	}
 }
 
-function durationMapping(numberOfVoice){
-	for(var voiceCount=1; voiceCount <= numberOfVoice; voiceCount++){
+function durationMapping(voiceCount){
 		var $voice ="\
 		<div id='dMappingPanel"+voiceCount+"' class='full_view well well-sm'>\
 			<fieldset>\
@@ -540,11 +556,9 @@ function durationMapping(numberOfVoice){
 		</div>\
 		";
 		$( ".duration_mapping" ).append( $voice );
-	}
 }
 
-function scaleOptions(numberOfVoice){
-	for(var voiceCount=1; voiceCount <= numberOfVoice; voiceCount++){
+function scaleOptions(voiceCount){
 		var $voice ="\
 		<div id='scaleOptionsPanel"+voiceCount+"' class='full_view well well-sm'>\
 			<fieldset>\
@@ -581,14 +595,11 @@ function scaleOptions(numberOfVoice){
 		</div>\
 		";
 		$( ".scale_options" ).append( $voice );
-	}
 }
 
-function play(numberOfVoice){
-	for(var voiceCount=1; voiceCount <= numberOfVoice; voiceCount++)
-	{
+function play(voiceCount){
 		var $voice="\
-		<div class='voice cf'>\
+		<div class='voice cf' id='voiceContainer"+voiceCount+"'>\
 			<div class='play_voiceStyle cf'><label style='float:left;'>Pitch: </label>\
 			\
 			<div class='overflowDiv'> \
@@ -628,10 +639,7 @@ function play(numberOfVoice){
 			";
 		
 			$("#voice_container_div").append($voice);
-			var width=90/numberOfVoice+"%";
-	}
-
-	
+			var width=90/(+$(this).find('option:selected').text())+"%";
 }
 
 function displayImage(){//name could change			
