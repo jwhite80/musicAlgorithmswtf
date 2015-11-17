@@ -10,34 +10,38 @@ $(document).ready(function(){
 		
 		
 		 //NOTE: The below segment will insert text into the text box when 'Custom' is selected. --Evan
+		 //It matches the number of notes in pitch input, filling duration input with 1's
 		if($selected.text() == "Custom")
 		{
 			
-			var voiceCount = getVoiceNumber($parentId);
+			var voiceCount = getVoiceNumber($parentId); //Number of voices currently active.
 			
 			//We want to count how many notes are in pitchinput so that we can fill the duration input with the right amount
 			var pitchInputCount = getTextAreaData($('#areaPitch'+voiceCount)).length;
 			
-			var noteString = "";
-			for(var i = 0; i < pitchInputCount - 1; i++)
+			var noteString = populateDurationCustomText(pitchInputCount);
+			
+			$area.val(noteString);
+		}
+		
+	});
+	
+	//This function fills the durationInput textbox with the appropriate number of notes (1 by default) in order to match the number of notes in the pitch section.
+	function populateDurationCustomText(noteCount) {
+		var noteString = "";
+			for(var i = 0; i < noteCount - 1; i++)
 			{
 				noteString += 1 + ",";
 			}
 			
 			
-			if(pitchInputCount > 0)
+			if(noteCount > 0)
 			{
 				noteString += "1";
 			}
-			else
-			{
-				$area.val("");
-			}
-			$area.val(noteString);
-		}
+		return noteString;
 		
-	});
-
+	}//end function
 	$('.duration_input').on('change', '[id^=dInput_set], [id^=dAreaMap]', function() {
 		var $parentId =  $(this).closest('div[id]');
 		var currVoiceNum = getVoiceNumber($parentId);

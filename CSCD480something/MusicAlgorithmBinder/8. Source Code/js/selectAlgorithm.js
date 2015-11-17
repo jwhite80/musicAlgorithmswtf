@@ -109,7 +109,6 @@ var ESequence = function(){
 		var _value = new Array();
 
 		if(numberOfValues <1){
-			_value.push(0);
 		 	return _value;
 		}
 
@@ -155,7 +154,6 @@ var PiSequence = function(){
 		var _value = new Array();		
 
 		if(numberOfValues <1){
-			_value.push(0);
 			return _value;//important to have 
 		}
 
