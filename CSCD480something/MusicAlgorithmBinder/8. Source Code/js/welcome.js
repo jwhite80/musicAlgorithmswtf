@@ -48,12 +48,9 @@ function call_pitch(userChoice,noteCount,areaN){// areaN = text area to write to
 	var selectedAlgorithm = algorithmFactory.createSequence(userChoice);//get from user
 	musicAlgorithms.setAlgorithm(selectedAlgorithm);
 	var currData = musicAlgorithms.getValues(noteCount);
-	//alert("call_pitch called");
 	
 	if(userChoice != "Custom")
 	{
-		//var nc = getNoteCount(areaN);
-		//alert("Custom selected ");// + nc);
 		mapWriteOutput(areaN,currData);		
 	}	
 }
@@ -64,7 +61,6 @@ function writeNoteCount(count,areaN){// what is this for? Not necessary
 
 function mapWriteOutput($textArea,data){ // text area is passed in as text. should be the text area itself
 	$("#"+$textArea).val(data);
-	//alert("data written");
 }
 
 function getNoteCount(textArea){
@@ -75,9 +71,10 @@ function getNoteCount(textArea){
 //This grabs values out of the text box, strips negatives and and spaces, and splits by the comma delimiter.
 function getTextAreaData(textArea){
 
-	var value = textArea.val();
-	value = value.replace(/,,/g,'');
-	value = value.split(",").map(Number);
+	var value = textArea.val(); //value is a String
+	if(value.length > 0) {
+	value = value.replace(/,,/g,''); 
+	value = value.split(",").map(Number); //value is now an array
 	var newData = new Array();
 
 	for(var i = 0; i < value.length; i++)
@@ -87,10 +84,14 @@ function getTextAreaData(textArea){
 	}
 	
 	return newData;
+	}
+	else {
+		value = [];
+		return value;
+	}
 }
 
 function getDataArray(textArea){
-	//alert(getVoiceNumber(textArea));
 	var $noteCount = $("#note_count"+getVoiceNumber(textArea));
 	
 	var value = textArea.val();
@@ -105,7 +106,7 @@ function validatePanel(textArea, voiceNum){
 	validateNoteCount(textArea, voiceNum); 
 }
 
-//This function checks the values in the text area, it is also the culprit that prevents a text box from being blank
+//This function checks the values in the text area
 function validateTextArea(textArea){
 	var data = getTextAreaData(textArea);
 	var newData = new Array();
@@ -121,22 +122,18 @@ function validateTextArea(textArea){
 			newData.push(data[i]);
 		}
 	}
-		if(data.length == 1 && data[0] == 0){
-		newData[0] = "";
-	}
 	printArray(textArea, newData); 
 }
 
-function validateNoteCount(textArea, voiceNum){ //check the text area against the note count box
-	var data = getTextAreaData(textArea); //Grabs stuff from text box
-	var $inputBox = $("#note_count"+voiceNum); //Grabs stuff from the note count
-	//$(this).closest('div[id]').find('[id^=note_count]');//$("#note_count"+voiceNum);
-	//alert($inputBox.val() + " " + data.length);
-	if($inputBox.val() != data.length) //If the note count does not match the length of data from the text box...
+function validateNoteCount(textArea, voiceNum){ 	//check the text area against the note count box
+	var data = getTextAreaData(textArea); 			//Grabs stuff from text box
+	var $inputBox = $("#note_count"+voiceNum); 		//Grabs stuff from the note count
+
+	if($inputBox.val() != data.length) 				//If the note count does not match the length of data from the text box...
 	{
-		//alert("note count does not match");
 		var pitchInputCount = getTextAreaData($('#areaPitch'+voiceNum)).length; //the true length of the text area(the number of notes)
 		var durationInputCount = getTextAreaData($('#dAreaMap'+voiceNum)).length;
+		
 		//Make sure note count doesn't exceed cap
 		if(pitchInputCount > 2000)
 		{
@@ -148,13 +145,8 @@ function validateNoteCount(textArea, voiceNum){ //check the text area against th
 		}
 		var pitchSelection = $('#input_set'+voiceNum+'').find('option:selected').text(); //[CHANGED]
 		var durationSelection = $('#dInput_set'+voiceNum).find('option:selected').text();
-		//alert(pitchSelection.text() + " " + durationSelection.text());
-		//This should only be true when user selects 'Custom', clearing text box for their input
-		//alert("pitchinputcount: " + pitchInputCount + "\ndurationinputcount: " + durationInputCount);
-		if(data.length == 1 && data[0] == "") {
-			$inputBox.val(0);
-		}
-		else if(pitchSelection == "Custom" && durationSelection == "Custom")
+
+		if(pitchSelection == "Custom" && durationSelection == "Custom")
 		{
 			if(pitchInputCount < durationInputCount)
 				$inputBox.val(pitchInputCount);
@@ -169,10 +161,7 @@ function validateNoteCount(textArea, voiceNum){ //check the text area against th
 		{
 			$inputBox.val(durationInputCount);
 		}
-		
-		
-		
-		
+	
 	} 
 }
 
@@ -189,10 +178,8 @@ function printArray(textArea, data){
 	}
 	else
 	{
-		textArea.text("");
+		textArea.text();
 	}
-	//alert("writing array..." + textArea.text());
-	//alert("finished writing to " + textArea.text());
 }
 
 function getVoiceNumber($parentId){
