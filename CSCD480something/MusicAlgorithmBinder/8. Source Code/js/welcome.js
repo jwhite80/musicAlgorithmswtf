@@ -293,6 +293,14 @@ function replaceValue($parentId){
 			}		
 
 			mapWriteOutput($textArea.attr("id"),currentData);
+			
+			var stringArray = $textArea.attr("id").split('');
+			doScaleOptions(stringArray[stringArray.length - 1]);/* This takes the mapArea id,
+            which has a number at the end of the textArea.attr('id') that is associated
+            with the voice that is being modified. This gets split into a char array and 
+            since the voice number is at the end of the array, we can send the voice id to 
+            do scales options method which allows the pitch mapping to be updated in the
+            scale options tab.*/
 	
 		}
 		else{
